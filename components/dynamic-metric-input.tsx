@@ -42,7 +42,7 @@ export function DynamicMetricInput({
       <button
         onClick={() => submit(1)}
         disabled={loading}
-        className="neon-border rounded px-8 py-4 uppercase tracking-widest text-base font-black cursor-pointer transition-all hover:bg-primary/10 active:scale-95 disabled:opacity-50"
+        className="neon-border rounded-lg px-10 py-5 uppercase tracking-widest text-xl font-black cursor-pointer transition-all hover:bg-primary/10 active:scale-95 disabled:opacity-50"
         style={{ color: definition.color, borderColor: definition.color }}
       >
         {loading ? "[ ... ]" : `[ + ${definition.name} ]`}
@@ -61,11 +61,11 @@ export function DynamicMetricInput({
         }
         submit(val);
       }}
-      className="flex items-center gap-3"
+      className="flex items-center gap-4"
     >
-      <span className="text-text-muted text-lg font-bold">&gt;</span>
+      <span className="text-text-muted text-xl font-black">&gt;</span>
       <span
-        className="text-base font-bold uppercase tracking-widest"
+        className="text-lg font-black uppercase tracking-widest"
         style={{ color: definition.color }}
       >
         {definition.name}:
@@ -78,17 +78,17 @@ export function DynamicMetricInput({
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="0.0"
-        className="w-24 text-center text-lg tabular-nums"
+        className="w-28 text-center text-xl font-black tabular-nums"
       />
       <button
         type="submit"
         disabled={loading}
-        className="neon-border rounded px-5 py-2 uppercase tracking-widest text-sm font-bold cursor-pointer hover:bg-primary/10 disabled:opacity-50"
+        className="neon-border rounded-lg px-6 py-3 uppercase tracking-widest text-base font-black cursor-pointer hover:bg-primary/10 disabled:opacity-50"
         style={{ color: definition.color, borderColor: definition.color }}
       >
         {loading ? "[...]" : "[ LOG ]"}
       </button>
-      {error && <span className="text-red-500 text-sm font-bold">{error}</span>}
+      {error && <span className="text-red-500 text-base font-black">{error}</span>}
     </form>
   );
 }

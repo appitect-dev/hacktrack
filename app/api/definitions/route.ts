@@ -86,3 +86,55 @@ export async function POST(request: Request) {
     );
   }
 }
+
+export async function PUT(request: Request) {
+  try {
+    const session = await getSession();
+    if (!session) {
+      return NextResponse.json(
+        { error: "[ERR] Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    const { id, name, color, inputType, unit } = await request.json();
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "[ERR] Definition ID required" },
+        { status: 400 }
+      );
+    }
+
+    const existing = await prisma.metricDefinition.findUnique({
+      where: { id },
+    });
+
+    if (!existing) {
+      return NextResponse.json(
+        { error: "[ERR] Definition not found" },
+        { status: 404 }
+      );
+    }
+
+    const updates: Record<string, string> = {};
+    if (name !== undefined) updates.name = name.toUpperCase().slice(0, 30);
+    if (color !== undefined) updates.color = color;
+    if (inputType !== undefined)
+      updates.inputType = inputType === "NUMBER" ? "NUMBER" : "COUNTER";
+    if (unit !== undefined) updates.unit = unit.slice(0, 10);
+
+    const definition = await prisma.metricDefinition.update({
+      where: { id },
+      data: updates,
+    });
+
+    return NextResponse.json({ definition });
+  } catch (error) {
+    console.error("Definitions PUT error:", error);
+    return NextResponse.json(
+      { error: "[ERR] Failed to update definition" },
+      { status: 500 }
+    );
+  }
+}

@@ -138,7 +138,7 @@ export default function TrackPage() {
           )}
         </div>
 
-        <NewItemForm onCreated={handleSuccess} />
+        <NewItemForm onCreated={handleSuccess} definitions={definitions} />
       </div>
     </div>
   );
