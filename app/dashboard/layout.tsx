@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getSession } from "@/lib/auth";
 import { LogoutButton } from "@/components/logout-button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { FullscreenToggle } from "@/components/fullscreen-toggle";
 import { Countdown } from "@/components/countdown";
 
 export default async function DashboardLayout({
@@ -43,6 +44,7 @@ export default async function DashboardLayout({
               {session.name}
             </span>
           )}
+          <FullscreenToggle />
           <ThemeToggle />
           <LogoutButton />
         </div>
