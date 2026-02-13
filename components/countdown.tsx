@@ -24,7 +24,7 @@ export function Countdown() {
   if (remaining.done) {
     return (
       <div className="shrink-0 text-center py-1 border-b-2 border-red-500">
-        <span className="text-red-500 text-2xl font-black tracking-widest glow uppercase">
+        <span className="text-red-500 text-4xl font-black tracking-widest glow uppercase">
           TIME IS UP
         </span>
       </div>
@@ -35,13 +35,13 @@ export function Countdown() {
 
   return (
     <div className="shrink-0 text-center py-1 border-b-2 border-muted">
-      <span className="text-text-muted text-base font-black uppercase tracking-widest">
+      <span className="text-text-muted text-xl font-black uppercase tracking-widest">
         DEADLINE{" "}
       </span>
-      <span className="text-primary text-3xl font-black tabular-nums glow-sm tracking-wider">
+      <span className="text-primary text-5xl font-black tabular-nums glow-sm tracking-wider">
         {pad(remaining.h)}:{pad(remaining.m)}:{pad(remaining.s)}
       </span>
-      <span className="text-text-muted text-base font-black uppercase tracking-widest">
+      <span className="text-text-muted text-xl font-black uppercase tracking-widest">
         {" "}REMAINING
       </span>
     </div>
