@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum InputType {
+  COUNTER
+  NUMBER
+}
+
+model MetricDefinition {
+  id        String    @id @default(cuid())
+  slug      String    @unique
+  name      String
+  icon      String    @default("///")
+  color     String    @default("#00ff41")
+  inputType InputType @default(COUNTER)
+  unit      String    @default("")
+  isDefault Boolean   @default(false)
+  createdBy String?
+  createdAt DateTime  @default(now())
+  creator   User?     @relation(fields: [createdBy], references: [id])
+}
+
+model User {
+  id          String             @id @default(cuid())
+  name        String             @unique
+  pinHash     String
+  color       String             @default("#00ff41")
+  createdAt   DateTime           @default(now())
+  metrics     Metric[]
+  definitions MetricDefinition[]
+}
+
+model Metric {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  value     Float
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([userId, type])
+}
