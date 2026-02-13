@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
-import { buildTimeline } from "@/lib/chart-utils";
+import { buildHourlyTimeline } from "@/lib/chart-utils";
 
 export async function POST(request: Request) {
   try {
@@ -94,7 +94,7 @@ export async function GET() {
       }
     }
 
-    const timeline = buildTimeline(allMetrics, slugs, 7);
+    const timeline = buildHourlyTimeline(allMetrics, slugs, 24);
 
     return NextResponse.json({
       totals,

@@ -28,7 +28,7 @@ const defaults = [
     slug: "SLEEP",
     name: "SLEEP",
     icon: "///",
-    color: "#22d3ee",
+    color: "#a855f7",
     inputType: "NUMBER" as const,
     unit: "hrs",
     isDefault: true,
@@ -39,7 +39,7 @@ async function main() {
   for (const def of defaults) {
     await prisma.metricDefinition.upsert({
       where: { slug: def.slug },
-      update: {},
+      update: { color: def.color },
       create: def,
     });
   }

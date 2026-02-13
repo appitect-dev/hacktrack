@@ -42,7 +42,7 @@ export function DynamicMetricInput({
       <button
         onClick={() => submit(1)}
         disabled={loading}
-        className="neon-border rounded px-6 py-3 uppercase tracking-widest text-sm font-bold cursor-pointer transition-all hover:bg-primary/10 active:scale-95 disabled:opacity-50"
+        className="neon-border rounded px-8 py-4 uppercase tracking-widest text-base font-black cursor-pointer transition-all hover:bg-primary/10 active:scale-95 disabled:opacity-50"
         style={{ color: definition.color, borderColor: definition.color }}
       >
         {loading ? "[ ... ]" : `[ + ${definition.name} ]`}
@@ -63,9 +63,9 @@ export function DynamicMetricInput({
       }}
       className="flex items-center gap-3"
     >
-      <span className="text-text-muted">&gt;</span>
+      <span className="text-text-muted text-lg font-bold">&gt;</span>
       <span
-        className="text-sm uppercase tracking-widest"
+        className="text-base font-bold uppercase tracking-widest"
         style={{ color: definition.color }}
       >
         {definition.name}:
@@ -78,17 +78,17 @@ export function DynamicMetricInput({
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="0.0"
-        className="w-20 text-center tabular-nums"
+        className="w-24 text-center text-lg tabular-nums"
       />
       <button
         type="submit"
         disabled={loading}
-        className="neon-border rounded px-4 py-1 uppercase tracking-widest text-xs cursor-pointer hover:bg-primary/10 disabled:opacity-50"
+        className="neon-border rounded px-5 py-2 uppercase tracking-widest text-sm font-bold cursor-pointer hover:bg-primary/10 disabled:opacity-50"
         style={{ color: definition.color, borderColor: definition.color }}
       >
         {loading ? "[...]" : "[ LOG ]"}
       </button>
-      {error && <span className="text-red-500 text-xs">{error}</span>}
+      {error && <span className="text-red-500 text-sm font-bold">{error}</span>}
     </form>
   );
 }

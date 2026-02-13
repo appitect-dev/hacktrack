@@ -32,41 +32,46 @@ export function TeamBarChart({ data, definitions }: TeamBarChartProps) {
 
   return (
     <div className="neon-border rounded p-6">
-      <div className="text-text-muted text-xs uppercase tracking-widest mb-4">
+      <div className="text-text-muted text-sm font-bold uppercase tracking-widest mb-4">
         &gt; TEAM COMPARISON
       </div>
-      <div className="h-72">
+      <div className="h-80">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data}>
+          <BarChart data={data} barSize={28}>
             <CartesianGrid
               strokeDasharray="3 3"
               stroke="var(--muted)"
-              strokeOpacity={0.5}
+              strokeOpacity={0.6}
             />
             <XAxis
               dataKey="name"
               tick={{
-                fill: "var(--text-muted)",
-                fontSize: 10,
+                fill: "var(--foreground)",
+                fontSize: 13,
+                fontWeight: 700,
                 fontFamily: "monospace",
               }}
               stroke="var(--muted)"
+              strokeWidth={2}
             />
             <YAxis
               tick={{
-                fill: "var(--text-muted)",
-                fontSize: 10,
+                fill: "var(--foreground)",
+                fontSize: 13,
+                fontWeight: 700,
                 fontFamily: "monospace",
               }}
               stroke="var(--muted)"
               allowDecimals={false}
+              strokeWidth={2}
             />
             <Tooltip
               contentStyle={{
                 background: "var(--background)",
-                border: "1px solid var(--primary)",
+                border: "2px solid var(--primary)",
                 fontFamily: "monospace",
-                fontSize: 11,
+                fontSize: 14,
+                fontWeight: 700,
                 color: "var(--foreground)",
                 textTransform: "uppercase",
               }}
@@ -74,7 +79,8 @@ export function TeamBarChart({ data, definitions }: TeamBarChartProps) {
             <Legend
               wrapperStyle={{
                 fontFamily: "monospace",
-                fontSize: 10,
+                fontSize: 13,
+                fontWeight: 700,
                 textTransform: "uppercase",
               }}
             />
@@ -84,7 +90,9 @@ export function TeamBarChart({ data, definitions }: TeamBarChartProps) {
                 dataKey={def.slug}
                 name={def.name}
                 fill={def.color}
-                fillOpacity={0.8}
+                fillOpacity={0.9}
+                stroke={def.color}
+                strokeWidth={2}
               />
             ))}
           </BarChart>

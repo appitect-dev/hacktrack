@@ -9,8 +9,8 @@ export function Leaderboard({ team, definitions }: LeaderboardProps) {
   if (team.length === 0) {
     return (
       <div className="text-text-muted text-center py-8">
-        <p>[NO DATA]</p>
-        <p className="text-xs mt-2">
+        <p className="text-lg font-bold">[NO DATA]</p>
+        <p className="text-sm font-bold mt-2">
           Waiting for operatives to report...
         </p>
       </div>
@@ -19,29 +19,29 @@ export function Leaderboard({ team, definitions }: LeaderboardProps) {
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full text-sm">
+      <table className="w-full text-base">
         <thead>
-          <tr className="text-text-muted uppercase tracking-widest text-xs border-b border-muted">
-            <th className="text-left py-2 px-2">#</th>
-            <th className="text-left py-2 px-2">HANDLE</th>
+          <tr className="text-text-muted uppercase tracking-widest text-sm font-bold border-b-2 border-muted">
+            <th className="text-left py-3 px-3">#</th>
+            <th className="text-left py-3 px-3">HANDLE</th>
             {definitions.map((def) => (
-              <th key={def.slug} className="text-right py-2 px-2">
+              <th key={def.slug} className="text-right py-3 px-3">
                 {def.name}
               </th>
             ))}
-            <th className="text-right py-2 px-2">CAFF_SCORE</th>
+            <th className="text-right py-3 px-3">CAFF_SCORE</th>
           </tr>
         </thead>
         <tbody>
           {team.map((user, i) => (
             <tr
               key={user.id}
-              className="border-b border-dim hover:bg-primary/5 transition-colors"
+              className="border-b-2 border-dim hover:bg-primary/5 transition-colors"
             >
-              <td className="py-2 px-2 text-text-muted tabular-nums">
+              <td className="py-3 px-3 text-text-muted font-bold tabular-nums">
                 {String(i + 1).padStart(2, "0")}
               </td>
-              <td className="py-2 px-2 font-bold" style={{ color: user.color }}>
+              <td className="py-3 px-3 font-black text-lg" style={{ color: user.color }}>
                 {user.name}
               </td>
               {definitions.map((def) => {
@@ -49,7 +49,7 @@ export function Leaderboard({ team, definitions }: LeaderboardProps) {
                 return (
                   <td
                     key={def.slug}
-                    className="text-right py-2 px-2 tabular-nums"
+                    className="text-right py-3 px-3 tabular-nums font-bold text-lg"
                     style={{ color: def.color }}
                   >
                     {def.inputType === "NUMBER" ? val.toFixed(1) : val}
@@ -58,7 +58,7 @@ export function Leaderboard({ team, definitions }: LeaderboardProps) {
                 );
               })}
               <td
-                className="text-right py-2 px-2 tabular-nums font-bold glow-sm"
+                className="text-right py-3 px-3 tabular-nums font-black text-lg glow-sm"
                 style={{ color: user.color }}
               >
                 {user.caffeineScore}

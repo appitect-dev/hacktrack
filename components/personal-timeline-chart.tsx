@@ -30,42 +30,47 @@ export function PersonalTimelineChart({
 
   return (
     <div className="neon-border rounded p-6">
-      <div className="text-text-muted text-xs uppercase tracking-widest mb-4">
-        &gt; 7-DAY TIMELINE
+      <div className="text-text-muted text-sm font-bold uppercase tracking-widest mb-4">
+        &gt; 24H TIMELINE
       </div>
-      <div className="h-64">
+      <div className="h-72">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data}>
             <CartesianGrid
               strokeDasharray="3 3"
               stroke="var(--muted)"
-              strokeOpacity={0.5}
+              strokeOpacity={0.6}
             />
             <XAxis
-              dataKey="date"
+              dataKey="hour"
               tick={{
-                fill: "var(--text-muted)",
-                fontSize: 10,
+                fill: "var(--foreground)",
+                fontSize: 13,
+                fontWeight: 700,
                 fontFamily: "monospace",
               }}
-              tickFormatter={(v: string) => v.slice(5)}
               stroke="var(--muted)"
+              interval={3}
+              strokeWidth={2}
             />
             <YAxis
               tick={{
-                fill: "var(--text-muted)",
-                fontSize: 10,
+                fill: "var(--foreground)",
+                fontSize: 13,
+                fontWeight: 700,
                 fontFamily: "monospace",
               }}
               stroke="var(--muted)"
               allowDecimals={false}
+              strokeWidth={2}
             />
             <Tooltip
               contentStyle={{
                 background: "var(--background)",
-                border: "1px solid var(--primary)",
+                border: "2px solid var(--primary)",
                 fontFamily: "monospace",
-                fontSize: 11,
+                fontSize: 14,
+                fontWeight: 700,
                 color: "var(--foreground)",
                 textTransform: "uppercase",
               }}
@@ -79,8 +84,8 @@ export function PersonalTimelineChart({
                 name={def.name}
                 stroke={def.color}
                 fill={def.color}
-                fillOpacity={0.15}
-                strokeWidth={2}
+                fillOpacity={0.2}
+                strokeWidth={4}
               />
             ))}
           </AreaChart>

@@ -6,16 +6,16 @@
   --primary: #00ff41;
   --dim: #0a3a0a;
   --muted: #1a4a1a;
-  --text-muted: #4a8a4a;
+  --text-muted: #6aaa6a;
 }
 
 .light {
   --background: #f5f5f0;
   --foreground: #1a1a1a;
-  --primary: #008f00;
-  --dim: #d0d0c0;
-  --muted: #e0e0d8;
-  --text-muted: #606050;
+  --primary: #006a00;
+  --dim: #c0c0b0;
+  --muted: #d0d0c8;
+  --text-muted: #505040;
 }
 
 @theme inline {
@@ -43,8 +43,8 @@ body::after {
     0deg,
     transparent,
     transparent 2px,
-    rgba(0, 0, 0, 0.15) 2px,
-    rgba(0, 0, 0, 0.15) 4px
+    rgba(0, 0, 0, 0.12) 2px,
+    rgba(0, 0, 0, 0.12) 4px
   );
   pointer-events: none;
   z-index: 9999;
@@ -61,7 +61,7 @@ body::after {
 }
 
 .glow-sm {
-  text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+  text-shadow: 0 0 6px currentColor, 0 0 12px currentColor;
 }
 
 .light .glow {
@@ -74,21 +74,21 @@ body::after {
 
 /* Neon border glow on hover */
 .neon-border {
-  border: 1px solid var(--primary);
+  border: 2px solid var(--primary);
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .neon-border:hover {
-  box-shadow: 0 0 10px var(--primary), inset 0 0 10px rgba(0, 255, 65, 0.1);
+  box-shadow: 0 0 12px var(--primary), inset 0 0 12px rgba(0, 255, 65, 0.1);
 }
 
 .light .neon-border:hover {
-  box-shadow: 0 0 5px var(--primary);
+  box-shadow: 0 0 6px var(--primary);
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -97,7 +97,7 @@ body::after {
 
 ::-webkit-scrollbar-thumb {
   background: var(--muted);
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -110,9 +110,10 @@ input[type="password"],
 input[type="number"] {
   background: transparent;
   border: none;
-  border-bottom: 1px solid var(--primary);
+  border-bottom: 2px solid var(--primary);
   color: var(--foreground);
   font-family: var(--font-geist-mono), monospace;
+  font-weight: 700;
   outline: none;
   caret-color: var(--primary);
 }
@@ -121,7 +122,7 @@ input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="number"]:focus {
   border-bottom-color: var(--foreground);
-  box-shadow: 0 1px 0 var(--primary);
+  box-shadow: 0 2px 0 var(--primary);
 }
 
 /* Blinking cursor */

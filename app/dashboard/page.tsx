@@ -69,17 +69,17 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         {defs.map((def) => (
           <div key={def.slug} className="neon-border rounded p-4 text-center">
-            <div className="text-text-muted text-xs uppercase tracking-widest mb-1">
+            <div className="text-text-muted text-sm font-bold uppercase tracking-widest mb-1">
               TOTAL {def.name}
             </div>
             <div
-              className="text-2xl font-bold tabular-nums glow-sm"
+              className="text-3xl font-black tabular-nums glow-sm"
               style={{ color: def.color }}
             >
               {def.inputType === "NUMBER"
                 ? (totals[def.slug] || 0).toFixed(1)
                 : totals[def.slug] || 0}
-              {def.unit ? <span className="text-sm text-text-muted ml-1">{def.unit}</span> : null}
+              {def.unit ? <span className="text-base font-bold text-text-muted ml-1">{def.unit}</span> : null}
             </div>
           </div>
         ))}
@@ -89,7 +89,7 @@ export default async function DashboardPage() {
 
       <Leaderboard team={team} definitions={defs} />
 
-      <div className="text-text-muted text-xs text-center">
+      <div className="text-text-muted text-sm font-bold text-center">
         CAFF_SCORE = (RED_BULL * 2) + COFFEE // HIGHER = MORE FUEL
       </div>
     </div>

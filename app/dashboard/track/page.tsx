@@ -7,7 +7,7 @@ import { DynamicMetricInput } from "@/components/dynamic-metric-input";
 import { NewItemForm } from "@/components/new-item-form";
 import { PersonalTimelineChart } from "@/components/personal-timeline-chart";
 import { MetricEntry, MetricDefinition } from "@/lib/types";
-import { TimelinePoint } from "@/lib/chart-utils";
+import type { TimelinePoint } from "@/lib/chart-utils";
 
 export default function TrackPage() {
   const [totals, setTotals] = useState<Record<string, number>>({});
@@ -76,7 +76,7 @@ export default function TrackPage() {
       <PersonalTimelineChart data={timeline} definitions={definitions} />
 
       <div className="neon-border rounded p-6 space-y-6">
-        <div className="text-text-muted text-xs uppercase tracking-widest">
+        <div className="text-text-muted text-sm font-bold uppercase tracking-widest">
           &gt; LOG CONSUMPTION
         </div>
         <div className="flex flex-wrap gap-4">
@@ -100,7 +100,7 @@ export default function TrackPage() {
       <NewItemForm onCreated={handleSuccess} />
 
       <div className="neon-border rounded p-6">
-        <div className="text-text-muted text-xs uppercase tracking-widest mb-4">
+        <div className="text-text-muted text-sm font-bold uppercase tracking-widest mb-4">
           &gt; RECENT LOG [{recent.length} ENTRIES]
         </div>
         {recent.length === 0 ? (
@@ -114,13 +114,13 @@ export default function TrackPage() {
               return (
                 <div
                   key={entry.id}
-                  className="flex items-center gap-4 text-sm py-1 border-b border-dim"
+                  className="flex items-center gap-4 text-base font-bold py-2 border-b-2 border-dim"
                 >
-                  <span className="text-text-muted text-xs tabular-nums">
+                  <span className="text-text-muted text-sm font-bold tabular-nums">
                     {new Date(entry.createdAt).toLocaleTimeString()}
                   </span>
                   <span
-                    className="uppercase tracking-widest text-xs"
+                    className="uppercase tracking-widest text-sm font-bold"
                     style={{ color: def?.color || "var(--primary)" }}
                   >
                     {def?.name || entry.type}

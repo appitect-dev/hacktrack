@@ -1,72 +1,45 @@
-export interface DayData {
-  date: string;
-  value: number;
-}
-
 export interface TimelinePoint {
-  date: string;
+  hour: string;
   [slug: string]: string | number;
 }
 
-export function aggregateByDay(
-  metrics: { type: string; value: number; createdAt: Date | string }[],
-  type: string,
-  days = 7
-): DayData[] {
-  const now = new Date();
-  const result: DayData[] = [];
-
-  for (let i = days - 1; i >= 0; i--) {
-    const d = new Date(now);
-    d.setDate(d.getDate() - i);
-    const dateStr = d.toISOString().slice(0, 10);
-    result.push({ date: dateStr, value: 0 });
-  }
-
-  for (const m of metrics) {
-    if (m.type !== type) continue;
-    const dateStr =
-      typeof m.createdAt === "string"
-        ? m.createdAt.slice(0, 10)
-        : m.createdAt.toISOString().slice(0, 10);
-    const entry = result.find((r) => r.date === dateStr);
-    if (entry) entry.value += m.value;
-  }
-
-  return result;
-}
-
-export function buildTimeline(
+export function buildHourlyTimeline(
   metrics: { type: string; value: number; createdAt: Date | string }[],
   types: string[],
-  days = 7
+  hours = 24
 ): TimelinePoint[] {
   const now = new Date();
-  const dates: string[] = [];
+  const slots: string[] = [];
 
-  for (let i = days - 1; i >= 0; i--) {
+  for (let i = hours - 1; i >= 0; i--) {
     const d = new Date(now);
-    d.setDate(d.getDate() - i);
-    dates.push(d.toISOString().slice(0, 10));
+    d.setHours(d.getHours() - i, 0, 0, 0);
+    const label = d.toTimeString().slice(0, 5); // "HH:MM"
+    slots.push(label);
   }
 
   const map = new Map<string, TimelinePoint>();
-  for (const date of dates) {
-    const point: TimelinePoint = { date };
+  for (const hour of slots) {
+    const point: TimelinePoint = { hour };
     for (const t of types) point[t] = 0;
-    map.set(date, point);
+    map.set(hour, point);
   }
 
   for (const m of metrics) {
-    const dateStr =
+    const d =
       typeof m.createdAt === "string"
-        ? m.createdAt.slice(0, 10)
-        : m.createdAt.toISOString().slice(0, 10);
-    const point = map.get(dateStr);
+        ? new Date(m.createdAt)
+        : m.createdAt;
+
+    const hoursSince = (now.getTime() - d.getTime()) / (1000 * 60 * 60);
+    if (hoursSince > hours || hoursSince < 0) continue;
+
+    const label = d.toTimeString().slice(0, 5);
+    const point = map.get(label);
     if (point && types.includes(m.type)) {
       point[m.type] = (point[m.type] as number) + m.value;
     }
   }
 
-  return dates.map((d) => map.get(d)!);
+  return slots.map((s) => map.get(s)!);
 }
