@@ -37,7 +37,7 @@ export function Leaderboard({ team, definitions }: LeaderboardProps) {
               className="text-2xl font-black tabular-nums glow-sm"
               style={{ color: user.color }}
             >
-              {user.caffeineScore}
+              {user.totalScore}
             </span>
           </div>
           <div className="flex gap-3 mt-0.5">

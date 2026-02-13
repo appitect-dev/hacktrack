@@ -33,19 +33,18 @@ export async function GET() {
         }
       }
 
-      const caffeineScore =
-        (metrics["RED_BULL"] || 0) * 2 + (metrics["COFFEE"] || 0);
+      const totalScore = Object.values(metrics).reduce((sum, v) => sum + v, 0);
 
       return {
         id: user.id,
         name: user.name,
         color: user.color,
         metrics,
-        caffeineScore,
+        totalScore,
       };
     });
 
-    stats.sort((a, b) => b.caffeineScore - a.caffeineScore);
+    stats.sort((a, b) => b.totalScore - a.totalScore);
 
     return NextResponse.json({
       team: stats,

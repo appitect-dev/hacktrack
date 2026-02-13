@@ -16,7 +16,7 @@ export interface UserStats {
   name: string;
   color: string;
   metrics: Record<string, number>;
-  caffeineScore: number;
+  totalScore: number;
 }
 
 export interface MetricEntry {
