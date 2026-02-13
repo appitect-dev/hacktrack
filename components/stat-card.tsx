@@ -8,19 +8,19 @@ interface StatCardProps {
 
 export function StatCard({ label, value, unit, color = "#00ff41" }: StatCardProps) {
   return (
-    <div className="neon-border rounded p-2" style={{ borderColor: color }}>
-      <div className="text-text-muted text-xs font-bold uppercase tracking-widest">
+    <div className="neon-border rounded p-3" style={{ borderColor: color }}>
+      <div className="text-text-muted text-sm font-black uppercase tracking-widest">
         {label}
       </div>
       <div className="flex items-baseline gap-2">
         <span
-          className="text-3xl font-black tabular-nums glow-sm"
+          className="text-4xl font-black tabular-nums glow-sm"
           style={{ color }}
         >
           {value}
         </span>
         {unit && (
-          <span className="text-text-muted text-sm font-bold">{unit}</span>
+          <span className="text-text-muted text-base font-black">{unit}</span>
         )}
       </div>
     </div>

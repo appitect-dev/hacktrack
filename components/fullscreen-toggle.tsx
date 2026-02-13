@@ -25,7 +25,7 @@ export function FullscreenToggle() {
   return (
     <button
       onClick={toggle}
-      className="text-xs uppercase tracking-widest text-text-muted hover:text-primary transition-colors cursor-pointer font-bold"
+      className="text-sm uppercase tracking-widest text-text-muted hover:text-primary transition-colors cursor-pointer font-black"
     >
       {active ? "[ EXIT FS ]" : "[ FULLSCREEN ]"}
     </button>

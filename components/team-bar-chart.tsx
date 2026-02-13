@@ -31,13 +31,13 @@ export function TeamBarChart({ data, definitions }: TeamBarChartProps) {
   if (data.length === 0) return null;
 
   return (
-    <div className="neon-border rounded p-3 h-full flex flex-col">
-      <div className="text-text-muted text-xs font-bold uppercase tracking-widest mb-2 shrink-0">
+    <div className="neon-border rounded p-4 h-full flex flex-col">
+      <div className="text-text-muted text-sm font-black uppercase tracking-widest mb-2 shrink-0">
         &gt; TEAM COMPARISON
       </div>
       <div className="flex-1 min-h-0">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} barSize={28}>
+          <BarChart data={data} barSize={36}>
             <CartesianGrid
               strokeDasharray="3 3"
               stroke="var(--muted)"
@@ -47,8 +47,8 @@ export function TeamBarChart({ data, definitions }: TeamBarChartProps) {
               dataKey="name"
               tick={{
                 fill: "var(--foreground)",
-                fontSize: 13,
-                fontWeight: 700,
+                fontSize: 16,
+                fontWeight: 900,
                 fontFamily: "monospace",
               }}
               stroke="var(--muted)"
@@ -57,8 +57,8 @@ export function TeamBarChart({ data, definitions }: TeamBarChartProps) {
             <YAxis
               tick={{
                 fill: "var(--foreground)",
-                fontSize: 13,
-                fontWeight: 700,
+                fontSize: 16,
+                fontWeight: 900,
                 fontFamily: "monospace",
               }}
               stroke="var(--muted)"
@@ -70,8 +70,8 @@ export function TeamBarChart({ data, definitions }: TeamBarChartProps) {
                 background: "var(--background)",
                 border: "2px solid var(--primary)",
                 fontFamily: "monospace",
-                fontSize: 14,
-                fontWeight: 700,
+                fontSize: 16,
+                fontWeight: 900,
                 color: "var(--foreground)",
                 textTransform: "uppercase",
               }}
@@ -79,8 +79,8 @@ export function TeamBarChart({ data, definitions }: TeamBarChartProps) {
             <Legend
               wrapperStyle={{
                 fontFamily: "monospace",
-                fontSize: 13,
-                fontWeight: 700,
+                fontSize: 15,
+                fontWeight: 900,
                 textTransform: "uppercase",
               }}
             />

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { AsciiHeader } from "@/components/ascii-header";
 import { Leaderboard } from "@/components/leaderboard";
 import { TeamBarChartWrapper } from "@/components/team-bar-chart-wrapper";
 import { UserStats, MetricDefinition } from "@/lib/types";
@@ -44,8 +43,10 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <span className="text-primary glow-sm cursor-blink">LOADING DATA</span>
+      <div className="flex items-center justify-center h-full">
+        <span className="text-primary text-2xl glow-sm cursor-blink font-black">
+          LOADING DATA
+        </span>
       </div>
     );
   }
@@ -56,40 +57,47 @@ export default function DashboardPage() {
   }));
 
   return (
-    <div className="flex flex-col gap-3 h-full">
-      <AsciiHeader title="TEAM DASHBOARD" />
+    <div className="flex gap-4 h-full overflow-hidden">
+      {/* LEFT — 75% : totals + chart */}
+      <div className="w-3/4 flex flex-col gap-3 min-h-0">
+        <div className="grid grid-cols-3 gap-3 shrink-0">
+          {definitions.map((def) => (
+            <div key={def.slug} className="neon-border rounded p-3 text-center">
+              <div className="text-text-muted text-sm font-black uppercase tracking-widest">
+                TOTAL {def.name}
+              </div>
+              <div
+                className="text-4xl font-black tabular-nums glow-sm"
+                style={{ color: def.color }}
+              >
+                {def.inputType === "NUMBER"
+                  ? (totals[def.slug] || 0).toFixed(1)
+                  : totals[def.slug] || 0}
+                {def.unit ? (
+                  <span className="text-lg font-black text-text-muted ml-1">
+                    {def.unit}
+                  </span>
+                ) : null}
+              </div>
+            </div>
+          ))}
+        </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        {definitions.map((def) => (
-          <div key={def.slug} className="neon-border rounded p-2 text-center">
-            <div className="text-text-muted text-xs font-bold uppercase tracking-widest">
-              TOTAL {def.name}
-            </div>
-            <div
-              className="text-2xl font-black tabular-nums glow-sm"
-              style={{ color: def.color }}
-            >
-              {def.inputType === "NUMBER"
-                ? (totals[def.slug] || 0).toFixed(1)
-                : totals[def.slug] || 0}
-              {def.unit ? (
-                <span className="text-sm font-bold text-text-muted ml-1">
-                  {def.unit}
-                </span>
-              ) : null}
-            </div>
-          </div>
-        ))}
+        <div className="flex-1 min-h-0">
+          <TeamBarChartWrapper data={teamChartData} definitions={definitions} />
+        </div>
+
+        <div className="text-text-muted text-sm font-black text-center shrink-0">
+          CAFF_SCORE = (RED_BULL * 2) + COFFEE // HIGHER = MORE FUEL
+        </div>
       </div>
 
-      <div className="flex-1 min-h-0">
-        <TeamBarChartWrapper data={teamChartData} definitions={definitions} />
-      </div>
-
-      <Leaderboard team={team} definitions={definitions} />
-
-      <div className="text-text-muted text-xs font-bold text-center shrink-0">
-        CAFF_SCORE = (RED_BULL * 2) + COFFEE // HIGHER = MORE FUEL
+      {/* RIGHT — 25% : leaderboard */}
+      <div className="w-1/4 min-h-0 overflow-auto neon-border rounded p-3">
+        <div className="text-text-muted text-sm font-black uppercase tracking-widest mb-3">
+          LEADERBOARD
+        </div>
+        <Leaderboard team={team} definitions={definitions} />
       </div>
     </div>
   );
