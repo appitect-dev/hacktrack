@@ -34,7 +34,10 @@ export function buildHourlyTimeline(
     const hoursSince = (now.getTime() - d.getTime()) / (1000 * 60 * 60);
     if (hoursSince > hours || hoursSince < 0) continue;
 
-    const label = d.toTimeString().slice(0, 5);
+    // Bucket by hour — zero out minutes to match slot keys
+    const bucketed = new Date(d);
+    bucketed.setMinutes(0, 0, 0);
+    const label = bucketed.toTimeString().slice(0, 5);
     const point = map.get(label);
     if (point && types.includes(m.type)) {
       point[m.type] = (point[m.type] as number) + m.value;

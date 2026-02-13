@@ -28,6 +28,7 @@ export function NewItemForm({ onCreated, definitions = [] }: NewItemFormProps) {
   const [inputType, setInputType] = useState<"COUNTER" | "NUMBER">("COUNTER");
   const [unit, setUnit] = useState("");
   const [loading, setLoading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
 
   function resetForm() {
@@ -257,7 +258,7 @@ export function NewItemForm({ onCreated, definitions = [] }: NewItemFormProps) {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || deleting}
               className="neon-border rounded px-6 py-2 text-primary uppercase tracking-widest text-sm font-black cursor-pointer hover:bg-primary/10 disabled:opacity-50 transition-all"
             >
               {loading
@@ -266,6 +267,38 @@ export function NewItemForm({ onCreated, definitions = [] }: NewItemFormProps) {
                 ? "[ CREATE ]"
                 : "[ SAVE ]"}
             </button>
+
+            {mode === "edit" && editId && (
+              <button
+                type="button"
+                disabled={deleting || loading}
+                onClick={async () => {
+                  if (!confirm(`Delete "${name}" and all its data?`)) return;
+                  setDeleting(true);
+                  setError("");
+                  try {
+                    const res = await fetch("/api/definitions", {
+                      method: "DELETE",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ id: editId }),
+                    });
+                    if (res.ok) {
+                      resetForm();
+                      setMode("closed");
+                      onCreated();
+                    } else {
+                      const data = await res.json();
+                      setError(data.error || "[ERR] Failed to delete");
+                    }
+                  } finally {
+                    setDeleting(false);
+                  }
+                }}
+                className="rounded px-6 py-2 text-red-500 border-2 border-red-500 uppercase tracking-widest text-sm font-black cursor-pointer hover:bg-red-500/10 disabled:opacity-50 transition-all"
+              >
+                {deleting ? "[ ... ]" : "[ DELETE ]"}
+              </button>
+            )}
           </div>
 
           {error && <div className="text-red-500 text-sm font-black">{error}</div>}

@@ -87,6 +87,50 @@ export async function POST(request: Request) {
   }
 }
 
+export async function DELETE(request: Request) {
+  try {
+    const session = await getSession();
+    if (!session) {
+      return NextResponse.json(
+        { error: "[ERR] Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    const { id } = await request.json();
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "[ERR] Definition ID required" },
+        { status: 400 }
+      );
+    }
+
+    const existing = await prisma.metricDefinition.findUnique({
+      where: { id },
+    });
+
+    if (!existing) {
+      return NextResponse.json(
+        { error: "[ERR] Definition not found" },
+        { status: 404 }
+      );
+    }
+
+    // Delete all metrics of this type, then the definition
+    await prisma.metric.deleteMany({ where: { type: existing.slug } });
+    await prisma.metricDefinition.delete({ where: { id } });
+
+    return NextResponse.json({ message: "[OK] Definition deleted" });
+  } catch (error) {
+    console.error("Definitions DELETE error:", error);
+    return NextResponse.json(
+      { error: "[ERR] Failed to delete definition" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function PUT(request: Request) {
   try {
     const session = await getSession();
