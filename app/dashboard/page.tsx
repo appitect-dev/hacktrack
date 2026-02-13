@@ -87,9 +87,6 @@ export default function DashboardPage() {
           <TeamBarChartWrapper data={teamChartData} definitions={definitions} />
         </div>
 
-        <div className="text-text-muted text-sm font-black text-center shrink-0">
-          CAFF_SCORE = (RED_BULL * 2) + COFFEE // HIGHER = MORE FUEL
-        </div>
       </div>
 
       {/* RIGHT — 25% : leaderboard */}
