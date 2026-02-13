@@ -23,7 +23,7 @@ export function Countdown() {
 
   if (remaining.done) {
     return (
-      <div className="text-center py-3 border-b-2 border-red-500">
+      <div className="shrink-0 text-center py-1.5 border-b-2 border-red-500">
         <span className="text-red-500 text-lg font-black tracking-widest glow uppercase">
           TIME IS UP
         </span>
@@ -34,7 +34,7 @@ export function Countdown() {
   const pad = (n: number) => String(n).padStart(2, "0");
 
   return (
-    <div className="text-center py-3 border-b-2 border-muted">
+    <div className="shrink-0 text-center py-1.5 border-b-2 border-muted">
       <span className="text-text-muted text-sm font-bold uppercase tracking-widest">
         DEADLINE:{" "}
       </span>

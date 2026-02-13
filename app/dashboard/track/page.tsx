@@ -9,6 +9,8 @@ import { PersonalTimelineChart } from "@/components/personal-timeline-chart";
 import { MetricEntry, MetricDefinition } from "@/lib/types";
 import type { TimelinePoint } from "@/lib/chart-utils";
 
+const POLL_INTERVAL = 5000;
+
 export default function TrackPage() {
   const [totals, setTotals] = useState<Record<string, number>>({});
   const [recent, setRecent] = useState<MetricEntry[]>([]);
@@ -33,6 +35,8 @@ export default function TrackPage() {
 
   useEffect(() => {
     fetchData();
+    const id = setInterval(fetchData, POLL_INTERVAL);
+    return () => clearInterval(id);
   }, [fetchData]);
 
   function handleSuccess() {
@@ -42,9 +46,7 @@ export default function TrackPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <span className="text-primary glow-sm cursor-blink">
-          LOADING DATA
-        </span>
+        <span className="text-primary glow-sm cursor-blink">LOADING DATA</span>
       </div>
     );
   }
@@ -53,10 +55,10 @@ export default function TrackPage() {
   const numbers = definitions.filter((d) => d.inputType === "NUMBER");
 
   return (
-    <div className="space-y-8">
+    <div className="flex flex-col gap-3 h-full">
       <AsciiHeader title="PERSONAL TRACKING" />
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         {definitions.map((def) => (
           <StatCard
             key={def.slug}
@@ -73,13 +75,15 @@ export default function TrackPage() {
         ))}
       </div>
 
-      <PersonalTimelineChart data={timeline} definitions={definitions} />
+      <div className="flex-1 min-h-0">
+        <PersonalTimelineChart data={timeline} definitions={definitions} />
+      </div>
 
-      <div className="neon-border rounded p-6 space-y-6">
-        <div className="text-text-muted text-sm font-bold uppercase tracking-widest">
+      <div className="neon-border rounded p-3 space-y-3 shrink-0">
+        <div className="text-text-muted text-xs font-bold uppercase tracking-widest">
           &gt; LOG CONSUMPTION
         </div>
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-3 items-center">
           {counters.map((def) => (
             <DynamicMetricInput
               key={def.slug}
@@ -87,40 +91,40 @@ export default function TrackPage() {
               onSuccess={handleSuccess}
             />
           ))}
+          {numbers.map((def) => (
+            <DynamicMetricInput
+              key={def.slug}
+              definition={def}
+              onSuccess={handleSuccess}
+            />
+          ))}
         </div>
-        {numbers.map((def) => (
-          <DynamicMetricInput
-            key={def.slug}
-            definition={def}
-            onSuccess={handleSuccess}
-          />
-        ))}
       </div>
 
       <NewItemForm onCreated={handleSuccess} />
 
-      <div className="neon-border rounded p-6">
-        <div className="text-text-muted text-sm font-bold uppercase tracking-widest mb-4">
+      <div className="neon-border rounded p-3 shrink-0">
+        <div className="text-text-muted text-xs font-bold uppercase tracking-widest mb-2">
           &gt; RECENT LOG [{recent.length} ENTRIES]
         </div>
         {recent.length === 0 ? (
-          <div className="text-text-muted text-sm text-center py-4">
+          <div className="text-text-muted text-sm text-center py-2">
             [NO ENTRIES]
           </div>
         ) : (
-          <div className="space-y-1 max-h-64 overflow-y-auto">
+          <div className="space-y-0.5 max-h-32 overflow-y-auto">
             {recent.map((entry) => {
               const def = definitions.find((d) => d.slug === entry.type);
               return (
                 <div
                   key={entry.id}
-                  className="flex items-center gap-4 text-base font-bold py-2 border-b-2 border-dim"
+                  className="flex items-center gap-4 text-sm font-bold py-1 border-b border-dim"
                 >
-                  <span className="text-text-muted text-sm font-bold tabular-nums">
+                  <span className="text-text-muted text-xs font-bold tabular-nums">
                     {new Date(entry.createdAt).toLocaleTimeString()}
                   </span>
                   <span
-                    className="uppercase tracking-widest text-sm font-bold"
+                    className="uppercase tracking-widest text-xs font-bold"
                     style={{ color: def?.color || "var(--primary)" }}
                   >
                     {def?.name || entry.type}

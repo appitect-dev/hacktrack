@@ -13,9 +13,9 @@ export default async function DashboardLayout({
   const session = await getSession();
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="h-screen flex flex-col overflow-hidden">
       <Countdown />
-      <nav className="border-b-2 border-muted px-4 py-3 flex items-center justify-between">
+      <nav className="shrink-0 border-b-2 border-muted px-4 py-2 flex items-center justify-between">
         <div className="flex items-center gap-6">
           <span className="text-primary font-black tracking-widest text-base glow-sm">
             HACKTRACK
@@ -49,7 +49,7 @@ export default async function DashboardLayout({
           <LogoutButton />
         </div>
       </nav>
-      <main className="flex-1 p-4 md:p-8 max-w-5xl mx-auto w-full">
+      <main className="flex-1 overflow-auto p-3 md:p-4 max-w-6xl mx-auto w-full">
         {children}
       </main>
     </div>

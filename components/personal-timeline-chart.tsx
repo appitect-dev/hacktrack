@@ -29,11 +29,11 @@ export function PersonalTimelineChart({
   if (data.length === 0) return null;
 
   return (
-    <div className="neon-border rounded p-6">
-      <div className="text-text-muted text-sm font-bold uppercase tracking-widest mb-4">
+    <div className="neon-border rounded p-3 h-full flex flex-col">
+      <div className="text-text-muted text-xs font-bold uppercase tracking-widest mb-2 shrink-0">
         &gt; 24H TIMELINE
       </div>
-      <div className="h-72">
+      <div className="flex-1 min-h-0">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data}>
             <CartesianGrid
