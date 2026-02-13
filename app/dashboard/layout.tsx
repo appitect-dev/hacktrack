@@ -37,12 +37,13 @@ export default async function DashboardLayout({
         </div>
         <div className="flex items-center gap-5">
           {session && (
-            <span
-              className="text-base font-black uppercase tracking-widest"
+            <Link
+              href="/dashboard/profile"
+              className="text-base font-black uppercase tracking-widest hover:underline transition-colors"
               style={{ color: session.color }}
             >
               {session.name}
-            </span>
+            </Link>
           )}
           <FullscreenToggle />
           <ThemeToggle />
