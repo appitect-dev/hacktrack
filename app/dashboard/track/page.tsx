@@ -101,9 +101,11 @@ export default function TrackPage() {
             ))}
           </div>
         </div>
+
+        <NewItemForm onCreated={handleSuccess} definitions={definitions} />
       </div>
 
-      {/* RIGHT — recent log + new item */}
+      {/* RIGHT — recent log */}
       <div className="w-1/4 flex flex-col gap-3 min-h-0">
         <div className="neon-border rounded p-3 flex-1 min-h-0 flex flex-col">
           <div className="text-text-muted text-sm font-black uppercase tracking-widest mb-2 shrink-0">
@@ -137,8 +139,6 @@ export default function TrackPage() {
             </div>
           )}
         </div>
-
-        <NewItemForm onCreated={handleSuccess} definitions={definitions} />
       </div>
     </div>
   );

@@ -39,14 +39,24 @@ export function DynamicMetricInput({
 
   if (definition.inputType === "COUNTER") {
     return (
-      <button
-        onClick={() => submit(1)}
-        disabled={loading}
-        className="neon-border rounded-lg px-10 py-5 uppercase tracking-widest text-xl font-black cursor-pointer transition-all hover:bg-primary/10 active:scale-95 disabled:opacity-50"
-        style={{ color: definition.color, borderColor: definition.color }}
-      >
-        {loading ? "[ ... ]" : `[ + ${definition.name} ]`}
-      </button>
+      <div className="flex items-center gap-1">
+        <button
+          onClick={() => submit(-1)}
+          disabled={loading}
+          className="neon-border rounded-lg px-4 py-5 uppercase tracking-widest text-xl font-black cursor-pointer transition-all hover:bg-red-500/10 active:scale-95 disabled:opacity-50"
+          style={{ color: definition.color, borderColor: definition.color }}
+        >
+          -
+        </button>
+        <button
+          onClick={() => submit(1)}
+          disabled={loading}
+          className="neon-border rounded-lg px-10 py-5 uppercase tracking-widest text-xl font-black cursor-pointer transition-all hover:bg-primary/10 active:scale-95 disabled:opacity-50"
+          style={{ color: definition.color, borderColor: definition.color }}
+        >
+          {loading ? "[ ... ]" : `[ + ${definition.name} ]`}
+        </button>
+      </div>
     );
   }
 

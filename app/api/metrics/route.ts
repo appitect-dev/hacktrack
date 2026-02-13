@@ -27,9 +27,9 @@ export async function POST(request: Request) {
     }
 
     const numValue = Number(value);
-    if (isNaN(numValue) || numValue <= 0) {
+    if (isNaN(numValue) || numValue === 0) {
       return NextResponse.json(
-        { error: "[ERR] Value must be positive" },
+        { error: "[ERR] Value must be non-zero" },
         { status: 400 }
       );
     }
