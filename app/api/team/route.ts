@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 import { UserStats } from "@/lib/types";
+import { buildHourlyTimeline } from "@/lib/chart-utils";
 
 export async function GET() {
   try {
@@ -46,8 +47,12 @@ export async function GET() {
 
     stats.sort((a, b) => b.totalScore - a.totalScore);
 
+    const allMetrics = users.flatMap((u) => u.metrics);
+    const timeline = buildHourlyTimeline(allMetrics, slugs, 24);
+
     return NextResponse.json({
       team: stats,
+      timeline,
       definitions: definitions.map((d) => ({
         id: d.id,
         slug: d.slug,

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Theme, THEME_COOKIE } from "@/lib/theme";
 import "./globals.css";
@@ -27,6 +28,7 @@ export default async function RootLayout({
     <html lang="en" className={theme}>
       <body className={`${geistMono.variable} font-mono antialiased`}>
         <ThemeProvider initialTheme={theme}>{children}</ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );

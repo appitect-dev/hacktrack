@@ -3,7 +3,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { Leaderboard } from "@/components/leaderboard";
 import { TeamBarChartWrapper } from "@/components/team-bar-chart-wrapper";
+import { PersonalTimelineChart } from "@/components/personal-timeline-chart";
 import { UserStats, MetricDefinition } from "@/lib/types";
+import type { TimelinePoint } from "@/lib/chart-utils";
 
 const POLL_INTERVAL = 5000;
 
@@ -11,6 +13,7 @@ export default function DashboardPage() {
   const [team, setTeam] = useState<UserStats[]>([]);
   const [definitions, setDefinitions] = useState<MetricDefinition[]>([]);
   const [totals, setTotals] = useState<Record<string, number>>({});
+  const [timeline, setTimeline] = useState<TimelinePoint[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchData = useCallback(async () => {
@@ -20,6 +23,7 @@ export default function DashboardPage() {
         const data = await res.json();
         setTeam(data.team);
         setDefinitions(data.definitions);
+        setTimeline(data.timeline);
 
         const t: Record<string, number> = {};
         for (const def of data.definitions) t[def.slug] = 0;
@@ -81,6 +85,10 @@ export default function DashboardPage() {
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="flex-1 min-h-0">
+          <PersonalTimelineChart data={timeline} definitions={definitions} />
         </div>
 
         <div className="flex-1 min-h-0">
