@@ -46,7 +46,14 @@ export default function LoginPage() {
         return;
       }
 
-      router.push("/dashboard");
+      // Organizers go to their own dashboard; members go to /dashboard
+      // (which redirects to /join if they have no team yet)
+      const role = data.user?.role;
+      if (role === "ORGANIZER" || role === "SUPERADMIN") {
+        router.push("/organizer");
+      } else {
+        router.push("/dashboard");
+      }
     } catch {
       setError("[ERR] Connection failed");
     } finally {
@@ -153,7 +160,12 @@ export default function LoginPage() {
         </form>
 
         <p className="text-text-muted text-xs text-center mt-8">
-          SYSTEM v1.0 // HACKATHON FUEL TRACKER
+          SYSTEM v2.0 // HACKATHON FUEL TRACKER
+        </p>
+        <p className="text-text-muted text-xs text-center mt-2">
+          <a href="/register-organizer" className="hover:text-primary transition-colors">
+            ORGANIZER? →
+          </a>
         </p>
       </div>
     </div>

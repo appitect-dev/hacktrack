@@ -1,6 +1,6 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
-import { SessionPayload } from "./types";
+import { SessionPayload, Role } from "./types";
 
 const COOKIE_NAME = "htrack-session";
 const secret = new TextEncoder().encode(
@@ -40,7 +40,7 @@ export function setSessionCookie(token: string) {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax" as const,
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    maxAge: 60 * 60 * 24 * 7,
     path: "/",
   };
 }
@@ -55,4 +55,19 @@ export function clearSessionCookie() {
     maxAge: 0,
     path: "/",
   };
+}
+
+// ─── Role helpers ─────────────────────────────────────────────────────────────
+
+export function hasRole(session: SessionPayload | null, ...roles: Role[]): boolean {
+  if (!session) return false;
+  return roles.includes(session.role);
+}
+
+export function isOrganizer(session: SessionPayload | null): boolean {
+  return hasRole(session, "ORGANIZER", "SUPERADMIN");
+}
+
+export function isSuperadmin(session: SessionPayload | null): boolean {
+  return hasRole(session, "SUPERADMIN");
 }

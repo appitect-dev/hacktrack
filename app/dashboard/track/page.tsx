@@ -7,6 +7,7 @@ import { NewItemForm } from "@/components/new-item-form";
 import { PersonalTimelineChart } from "@/components/personal-timeline-chart";
 import { MetricEntry, MetricDefinition } from "@/lib/types";
 import type { TimelinePoint } from "@/lib/chart-utils";
+import { ProposeMetric } from "@/components/propose-metric";
 
 const POLL_INTERVAL = 5000;
 
@@ -105,8 +106,9 @@ export default function TrackPage() {
         <NewItemForm onCreated={handleSuccess} definitions={definitions} />
       </div>
 
-      {/* RIGHT — recent log */}
+      {/* RIGHT — recent log + proposals */}
       <div className="w-1/4 flex flex-col gap-3 min-h-0">
+        <ProposeMetric />
         <div className="neon-border rounded p-3 flex-1 min-h-0 flex flex-col">
           <div className="text-text-muted text-sm font-black uppercase tracking-widest mb-2 shrink-0">
             &gt; RECENT [{recent.length}]

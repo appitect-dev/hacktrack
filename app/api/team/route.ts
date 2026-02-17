@@ -14,16 +14,30 @@ export async function GET() {
       );
     }
 
+    const definitionWhere = session.hackathonId
+      ? { hackathonId: session.hackathonId }
+      : {};
+
     const definitions = await prisma.metricDefinition.findMany({
+      where: definitionWhere,
       orderBy: [{ isDefault: "desc" }, { createdAt: "asc" }],
     });
 
     const slugs = definitions.map((d) => d.slug);
 
-    const users = await prisma.user.findMany({
-      include: { metrics: true },
-      orderBy: { createdAt: "asc" },
-    });
+    // Fetch members of the current team, or all users if no team context
+    const users = session.teamId
+      ? await prisma.user.findMany({
+          where: {
+            memberships: { some: { teamId: session.teamId } },
+          },
+          include: { metrics: true },
+          orderBy: { createdAt: "asc" },
+        })
+      : await prisma.user.findMany({
+          include: { metrics: true },
+          orderBy: { createdAt: "asc" },
+        });
 
     const stats: UserStats[] = users.map((user) => {
       const metrics: Record<string, number> = {};
