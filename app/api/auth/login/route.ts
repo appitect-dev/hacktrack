@@ -35,15 +35,25 @@ export async function POST(request: Request) {
       );
     }
 
+    // Resolve active team/hackathon context for session
+    const membership = await prisma.teamMembership.findFirst({
+      where: { userId: user.id },
+      include: { team: { select: { hackathonId: true } } },
+      orderBy: { joinedAt: "desc" },
+    });
+
     const token = await createSession({
       userId: user.id,
       name: user.name,
       color: user.color,
+      role: user.role,
+      teamId: membership?.teamId ?? null,
+      hackathonId: membership?.team.hackathonId ?? null,
     });
 
     const response = NextResponse.json({
       message: "[OK] Logged in",
-      user: { id: user.id, name: user.name, color: user.color },
+      user: { id: user.id, name: user.name, color: user.color, role: user.role },
     });
     response.cookies.set(setSessionCookie(token));
     return response;

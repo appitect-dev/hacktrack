@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 import { LogoutButton } from "@/components/logout-button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { FullscreenToggle } from "@/components/fullscreen-toggle";
@@ -11,10 +13,22 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const session = await getSession();
+  if (!session) redirect("/login");
+  // Organizers/admins have their own dashboard
+  if (session.role === "ORGANIZER" || session.role === "SUPERADMIN") redirect("/organizer");
+  // Members without a team get sent to the join flow
+  if (!session.teamId) redirect("/join");
+
+  const hackathon = session.hackathonId
+    ? await prisma.hackathon.findUnique({
+        where: { id: session.hackathonId },
+        select: { endAt: true },
+      })
+    : null;
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      <Countdown />
+      <Countdown endAt={hackathon?.endAt.toISOString()} />
       <nav className="shrink-0 border-b-2 border-muted px-6 py-2 flex items-center justify-between">
         <div className="flex items-center gap-8">
           <span className="text-primary font-black tracking-widest text-xl glow-sm">

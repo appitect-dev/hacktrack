@@ -2,13 +2,17 @@
 
 import { useState, useEffect } from "react";
 
-const DEADLINE = new Date("2026-02-14T13:00:00");
+interface Props {
+  endAt?: string; // ISO string
+}
 
-export function Countdown() {
+export function Countdown({ endAt }: Props) {
+  const deadline = endAt ? new Date(endAt) : null;
   const [remaining, setRemaining] = useState(calcRemaining());
 
   function calcRemaining() {
-    const diff = DEADLINE.getTime() - Date.now();
+    if (!deadline) return { h: 0, m: 0, s: 0, done: true };
+    const diff = deadline.getTime() - Date.now();
     if (diff <= 0) return { h: 0, m: 0, s: 0, done: true };
     const h = Math.floor(diff / 3600000);
     const m = Math.floor((diff % 3600000) / 60000);
@@ -17,9 +21,13 @@ export function Countdown() {
   }
 
   useEffect(() => {
+    if (!deadline) return;
     const id = setInterval(() => setRemaining(calcRemaining()), 1000);
     return () => clearInterval(id);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [endAt]);
+
+  if (!deadline) return null;
 
   if (remaining.done) {
     return (

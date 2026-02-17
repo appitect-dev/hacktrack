@@ -15,9 +15,14 @@ export async function POST(request: Request) {
 
     const { type, value } = await request.json();
 
-    const definition = await prisma.metricDefinition.findUnique({
-      where: { slug: type },
-    });
+    // Validate definition exists for this hackathon (or globally if no hackathon)
+    const definition = session.hackathonId
+      ? await prisma.metricDefinition.findUnique({
+          where: {
+            slug_hackathonId: { slug: type, hackathonId: session.hackathonId },
+          },
+        })
+      : await prisma.metricDefinition.findFirst({ where: { slug: type } });
 
     if (!definition) {
       return NextResponse.json(
@@ -37,6 +42,7 @@ export async function POST(request: Request) {
     const metric = await prisma.metric.create({
       data: {
         userId: session.userId,
+        teamId: session.teamId ?? null,
         type,
         value: numValue,
       },
@@ -70,7 +76,12 @@ export async function GET() {
       );
     }
 
+    const definitionWhere = session.hackathonId
+      ? { hackathonId: session.hackathonId }
+      : {};
+
     const definitions = await prisma.metricDefinition.findMany({
+      where: definitionWhere,
       orderBy: [{ isDefault: "desc" }, { createdAt: "asc" }],
     });
 

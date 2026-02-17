@@ -6,12 +6,20 @@ import { NEON_COLORS } from "@/lib/types";
 
 export async function POST(request: Request) {
   try {
-    const { name, pin, color } = await request.json();
+    const { name, pin, color, organizerSecret } = await request.json();
 
-    if (!name || !pin) {
+    if (!name || !pin || !organizerSecret) {
       return NextResponse.json(
-        { error: "[ERR] Name and PIN required" },
+        { error: "[ERR] Name, PIN, and organizer secret required" },
         { status: 400 }
+      );
+    }
+
+    const expectedSecret = process.env.ORGANIZER_SECRET;
+    if (!expectedSecret || organizerSecret !== expectedSecret) {
+      return NextResponse.json(
+        { error: "[ERR] Invalid organizer secret" },
+        { status: 403 }
       );
     }
 
@@ -41,7 +49,7 @@ export async function POST(request: Request) {
     }
 
     const validColor =
-      color && NEON_COLORS.includes(color) ? color : "#00ff41";
+      color && NEON_COLORS.includes(color) ? color : "#ff8800";
     const pinHash = await bcrypt.hash(pin, 10);
 
     const user = await prisma.user.create({
@@ -49,6 +57,7 @@ export async function POST(request: Request) {
         name: trimmedName,
         pinHash,
         color: validColor,
+        role: "ORGANIZER",
       },
     });
 
@@ -56,19 +65,22 @@ export async function POST(request: Request) {
       userId: user.id,
       name: user.name,
       color: user.color,
-      role: "MEMBER",
+      role: "ORGANIZER",
       teamId: null,
       hackathonId: null,
     });
 
     const response = NextResponse.json(
-      { message: "[OK] User registered", user: { id: user.id, name: user.name, color: user.color, role: "MEMBER" } },
+      {
+        message: "[OK] Organizer registered",
+        user: { id: user.id, name: user.name, color: user.color, role: "ORGANIZER" },
+      },
       { status: 201 }
     );
     response.cookies.set(setSessionCookie(token));
     return response;
   } catch (error) {
-    console.error("Register error:", error);
+    console.error("Organizer register error:", error);
     return NextResponse.json(
       { error: "[ERR] Registration failed" },
       { status: 500 }

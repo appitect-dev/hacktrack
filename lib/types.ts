@@ -1,4 +1,7 @@
 export type InputType = "COUNTER" | "NUMBER";
+export type Role = "SUPERADMIN" | "ORGANIZER" | "MEMBER";
+export type HackathonStatus = "DRAFT" | "ACTIVE" | "ENDED";
+export type ProposalStatus = "PENDING" | "APPROVED" | "REJECTED";
 
 export interface MetricDefinition {
   id: string;
@@ -9,6 +12,7 @@ export interface MetricDefinition {
   inputType: InputType;
   unit: string;
   isDefault: boolean;
+  hackathonId?: string | null;
 }
 
 export interface UserStats {
@@ -30,6 +34,46 @@ export interface SessionPayload {
   userId: string;
   name: string;
   color: string;
+  role: Role;
+  teamId?: string | null;
+  hackathonId?: string | null;
+}
+
+export interface TeamInfo {
+  id: string;
+  name: string;
+  color: string;
+  inviteCode: string;
+  hackathonId: string;
+  memberCount: number;
+}
+
+export interface HackathonInfo {
+  id: string;
+  name: string;
+  description?: string | null;
+  status: HackathonStatus;
+  startAt: string;
+  endAt: string;
+  organizerId: string;
+}
+
+export interface MetricProposal {
+  id: string;
+  name: string;
+  slug: string;
+  icon: string;
+  inputType: InputType;
+  unit: string;
+  status: ProposalStatus;
+  reason?: string | null;
+  proposedById: string;
+  proposedByName: string;
+  proposedByColor: string;
+  hackathonId: string;
+  definitionId?: string | null;
+  createdAt: string;
+  resolvedAt?: string | null;
 }
 
 export const NEON_COLORS = [

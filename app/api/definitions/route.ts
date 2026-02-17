@@ -12,7 +12,12 @@ export async function GET() {
       );
     }
 
+    const where = session.hackathonId
+      ? { hackathonId: session.hackathonId }
+      : {};
+
     const definitions = await prisma.metricDefinition.findMany({
+      where,
       orderBy: [{ isDefault: "desc" }, { createdAt: "asc" }],
     });
 
@@ -36,6 +41,13 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!session.hackathonId) {
+      return NextResponse.json(
+        { error: "[ERR] No active hackathon — join a team first" },
+        { status: 400 }
+      );
+    }
+
     const { slug, name, icon, color, inputType, unit } = await request.json();
 
     if (!slug || !name) {
@@ -55,7 +67,9 @@ export async function POST(request: Request) {
     }
 
     const existing = await prisma.metricDefinition.findUnique({
-      where: { slug: normalized },
+      where: {
+        slug_hackathonId: { slug: normalized, hackathonId: session.hackathonId },
+      },
     });
     if (existing) {
       return NextResponse.json(
@@ -73,6 +87,7 @@ export async function POST(request: Request) {
         inputType: inputType === "NUMBER" ? "NUMBER" : "COUNTER",
         unit: unit || "",
         isDefault: false,
+        hackathonId: session.hackathonId,
         createdBy: session.userId,
       },
     });

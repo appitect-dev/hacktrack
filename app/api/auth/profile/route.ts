@@ -103,11 +103,14 @@ export async function PUT(request: Request) {
       data: updates,
     });
 
-    // Re-issue session token with updated data
+    // Re-issue session token with updated data (preserve role + team context)
     const token = await createSession({
       userId: user.id,
       name: user.name,
       color: user.color,
+      role: session.role,
+      teamId: session.teamId,
+      hackathonId: session.hackathonId,
     });
 
     const cookieStore = await cookies();
